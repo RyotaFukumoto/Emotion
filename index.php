@@ -1,9 +1,12 @@
 
 <!DOCTYPE HTML>
 <?php
+
+$aaa = 0;
 	if(isset($_GET['submit'])){
+
 		$api_url='http://ap.mextractr.net/ma9/emotion_analyzer?apikey=';
-		$api_key='03B9E9231D6C2EACCA2E15C43FA4C9B2934F17D8';//apikeyは各自で書き換えてください
+		$api_key='A09C2D091C0995F3A08AE6184FBB80A4BBDA38DE';//apikeyは各自で書き換えてください
 		$base_url = $api_url.$api_key.'&out=json&text=';
 		    $proxy = array(
 		      "http" => array(
@@ -12,6 +15,7 @@
 		      ),
 		    );
 		    $proxy_context = stream_context_create($proxy);
+
 		    try{
 		      $response = file_get_contents($base_url.$_GET['text'],false,$proxy_context);
 		      $result = json_decode($response,true);
@@ -21,6 +25,8 @@
 					echo "joysad".$result['joysad']."　";
 					echo "likedislike".$result['likedislike']."　";
 					echo "angerfear".$result['angerfear'];
+					$aaa = 1;
+
 		    }catch(Exception $e){
 		      header("Location: index.php");
 		    }
@@ -64,5 +70,27 @@
 	<div style="text-align:center;">
 		<div id="chartContainer" style="height: 250px; width: 80%;margin:auto"></div>
 	</div>
+
+	<?php
+if($aaa == 0 ){
+
+}elseif($result['likedislike'] <= -30 && $result['joysad'] <= -30 &&  $result['angerfear'] > 30 ){
+echo "とても心が乱れています。:(";
+}elseif($result['likedislike'] <= -20 || $result['joysad'] <= -20 &&  $result['angerfear'] > 10 ){
+echo "ストレスが溜まっています。";
+}elseif ($result['likedislike'] <= -10 || $result['joysad'] <= -10 &&  $result['angerfear'] > 0) {
+echo "不快な気分を感じていませんか？";
+}elseif ($result['likedislike'] > 30 && $result['joysad'] > 30 &&  $result['angerfear'] <= 0) {
+echo "とても幸せな気持ちになっています。";
+}elseif ($result['likedislike'] > 20 || $result['joysad'] > 20 &&  $result['angerfear'] <= 0) {
+echo "楽しい気持ちになっています";
+}elseif ($result['likedislike'] >= 10 || $result['joysad'] >= 10 &&  $result['angerfear'] <= 0) {
+echo "楽しい気分です。";
+}else{
+	echo "平常心です。";
+}
+
+?>
+
 </body>
 </html>
