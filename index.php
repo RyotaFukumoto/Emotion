@@ -1,9 +1,29 @@
+
+<!DOCTYPE HTML>
 <?php
 	if(isset($_GET['submit'])){
-
+		$base_url = 'http://ap.mextractr.net/ma9/emotion_analyzer?apikey=03B9E9231D6C2EACCA2E15C43FA4C9B2934F17D8&out=json&text='; //apikeyは各自で書き換えてください
+		    $proxy = array(
+		      "http" => array(
+		       "proxy" => "tcp://proxy.kmt.neec.ac.jp:8080",
+		       'request_fulluri' => true,
+		      ),
+		    );
+		    $proxy_context = stream_context_create($proxy);
+		    try{
+		      $response = file_get_contents($base_url.$_GET['text'],false,$proxy_context);
+		      $result = json_decode($response,true);
+					$result['likedislike'] *= 10;
+					$result['joysad'] *= 10;
+					$result['angerfear'] *= 10;
+					echo "joysad".$result['joysad']."　";
+					echo "likedislike".$result['likedislike']."　";
+					echo "angerfear".$result['angerfear'];
+		    }catch(Exception $e){
+		      header("Location: index.php");
+		    }
 	}
 ?>
-<!DOCTYPE HTML>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -21,9 +41,9 @@
 					// Change type to "bar", "area", "spline", "pie",etc.
 					type: "column",
 					dataPoints: [
-						{ label: "like,dislike",  y: -25  },
-						{ label: "joy,sad", y: 15  },
-						{ label: "anger,fear", y: 10  },
+						{ label: "like,dislike",  y: <?php echo $result['likedislike']?>  },
+						{ label: "joy,sad", y: <?php echo $result['joysad']?>  },
+						{ label: "anger,fear", y: <?php echo $result['angerfear']?> },
 					]
 				}
 				]
