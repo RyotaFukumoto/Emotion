@@ -2,7 +2,9 @@
 <!DOCTYPE HTML>
 <?php
 	if(isset($_GET['submit'])){
-		$base_url = 'http://ap.mextractr.net/ma9/emotion_analyzer?apikey=03B9E9231D6C2EACCA2E15C43FA4C9B2934F17D8&out=json&text='; //apikeyは各自で書き換えてください
+		$api_url='http://ap.mextractr.net/ma9/emotion_analyzer?apikey=';
+		$api_key='03B9E9231D6C2EACCA2E15C43FA4C9B2934F17D8';//apikeyは各自で書き換えてください
+		$base_url = $api_url.$api_key.'&out=json&text=';
 		    $proxy = array(
 		      "http" => array(
 		       "proxy" => "tcp://proxy.kmt.neec.ac.jp:8080",
