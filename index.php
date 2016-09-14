@@ -109,15 +109,16 @@
 			 	$errmess =	"このページは対応していません";
  		}
 		$arr =	mb_str_split($text,25);
-		//array 要素確認
+
 		// print_r($arr);
 		$counts = count($arr);
 
 		# API接続URL作成
 		$api_url='http://ap.mextractr.net/ma9/emotion_analyzer?apikey=';
 		//apikeyは各自で書き換えてください
-		$api_key='AFA9E3C631DEEB9FE2E9E14114E8DE0E148DB6E4';
-		// $api_key='AF987632250187D34CDFEC31474ADE8AABD2E397';
+		// $api_key='AFA9E3C631DEEB9FE2E9E14114E8DE0E148DB6E4';//福本１
+		// $api_key='AF987632250187D34CDFEC31474ADE8AABD2E397';//福本2
+		$api_key='03B9E9231D6C2EACCA2E15C43FA4C9B2934F17D8';//林
 		$base_url = $api_url.$api_key.'&out=json&text=';
 
     $proxy = array(
@@ -134,9 +135,15 @@
 		    try{
 		      $response = file_get_contents($base_url.$tex,false);
 		      $result = json_decode($response,true);
-					$likedislikes = $likedislikes + ($result['likedislike'] *5);
-					$joysads = $joysads + ($result['joysad'] *5);
-					$angerfears = $angerfears + ($result['angerfear'] *5);
+					if(isset($result["analyzed_text"])){
+						$likedislikes = $likedislikes + ($result['likedislike'] *5);
+						$joysads = $joysads + ($result['joysad'] *5);
+						$angerfears = $angerfears + ($result['angerfear'] *5);
+						echo $i;
+					}else{
+						echo "<br>".$i;
+						$errmess = "APIキーが使用制限に達しました。";
+					}
 		    }catch(Exception $e){
 		      header("Location: index.php");
 		    }
@@ -171,9 +178,9 @@
 					// Change type to "bar", "area", "spline", "pie",etc.
 					type: "column",
 					dataPoints: [
-						{ label: "like,dislike",  y: <?php echo $likedislikes?>  },
-						{ label: "joy,sad", y: <?php echo $joysads?>  },
-						{ label: "anger,fear", y: <?php echo $angerfears?> },
+						{ label: "＋　好き/ー　嫌い",  y: <?php echo $likedislikes?>  },
+						{ label: "＋　嬉しい/ー　悲しい", y: <?php echo $joysads?>  },
+						{ label: "＋　怒り/ー　怖い", y: <?php echo $angerfears?> },
 					]
 				}
 				]
