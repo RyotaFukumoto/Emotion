@@ -22,9 +22,15 @@
 
 	//検索処理
 	if(isset($_GET['submit'])){
-		$likedislikes = 0;
-		$joysads = 0;
-		$angerfears = 0;
+		// $likedislikes = 0;
+		$like = 0;
+		$dislike = 0;
+		// $joysads = 0;
+		$joy = 0;
+		$sad = 0;
+		// $angerfears = 0;
+		$anger = 0;
+		$fear = 0;
 		$counts = 0;
 		$text = "";
 		//require
@@ -118,7 +124,8 @@
 		//apikeyは各自で書き換えてください
 		// $api_key='AFA9E3C631DEEB9FE2E9E14114E8DE0E148DB6E4';//福本１
 		// $api_key='AF987632250187D34CDFEC31474ADE8AABD2E397';//福本2
-		$api_key='03B9E9231D6C2EACCA2E15C43FA4C9B2934F17D8';//林
+		// $api_key='03B9E9231D6C2EACCA2E15C43FA4C9B2934F17D8';//林
+		$api_key='A09C2D091C0995F3A08AE6184FBB80A4BBDA38DE';//望月
 		$base_url = $api_url.$api_key.'&out=json&text=';
 
     $proxy = array(
@@ -136,12 +143,25 @@
 		      $response = file_get_contents($base_url.$tex,false);
 		      $result = json_decode($response,true);
 					if(isset($result["analyzed_text"])){
-						$likedislikes = $likedislikes + ($result['likedislike'] *5);
-						$joysads = $joysads + ($result['joysad'] *5);
-						$angerfears = $angerfears + ($result['angerfear'] *5);
-						echo $i;
+						if($result["likedislike"] > 0){
+							$like = $like + ($result["likedislike"] * 5);
+						}else {
+							$dislike = $dislike + ($result["likedislike"] * -5);
+						}
+						// $likedislikes = $likedislikes + ($result['likedislike'] *5);
+						if($result["joysad"] > 0){
+							$joy = $joy + ($result["joysad"] * 5);
+						}else {
+							$sad = $sad + ($result["joysad"] * -5);
+						}
+						// $joysads = $joysads + ($result['joysad'] *5);
+						if($result["angerfear"] > 0){
+							$anger = $anger + ($result["angerfear"] * 5);
+						}else {
+							$fear = $fear + ($result["angerfear"] * 5);
+						}
+						// $angerfears = $angerfears + ($result['angerfear'] *5);
 					}else{
-						echo "<br>".$i;
 						$errmess = "APIキーが使用制限に達しました。";
 					}
 		    }catch(Exception $e){
@@ -176,11 +196,28 @@
 				data: [
 				{
 					// Change type to "bar", "area", "spline", "pie",etc.
-					type: "column",
+					type: "pie",
 					dataPoints: [
-						{ label: "＋　好き/ー　嫌い",  y: <?php echo $likedislikes?>  },
-						{ label: "＋　嬉しい/ー　悲しい", y: <?php echo $joysads?>  },
-						{ label: "＋　怒り/ー　怖い", y: <?php echo $angerfears?> },
+						<?php
+							if($like != 0){
+								echo '{ label: "好き",  y: '.$like.  '},';
+							}
+							if($dislike != 0){
+								echo '{ label: "嫌い",  y: '.$dislike.  '},';
+							}
+							if($joy != 0){
+								echo '{ label: "嬉しい",  y: '.$joy.  '},';
+							}
+							if($sad != 0){
+								echo '{ label: "悲しい",  y: '.$sad.  '},';
+							}
+							if($anger != 0){
+								echo '{ label: "怒り",  y: '.$anger.  '},';
+							}
+							if($fear != 0){
+								echo '{ label: "怖い",  y: '.$fear.  '},';
+							}
+						?>
 					]
 				}
 				]
@@ -212,6 +249,9 @@
 <body>
 		<div class="container">
 			<div class= "center-block" >
+				<div style="text-align:center;">
+					<a href="./index.php" ><img src="frame.jpg" style="height:100px;"></a>
+				</div>
 				<div>
 					<form action=""　method="get" class="form-inline" onsubmit="return check(this)">
 						<!-- input type="text" name="text"　placeholder="テキストを入力してください"> -->
