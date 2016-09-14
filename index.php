@@ -45,17 +45,17 @@
 			//DOM取得
 			$doc = phpQuery::newDocument($html);
 
-	 		echo "yahooです";
+			// 	echo "yahooです";
 		 	if (isset($doc[".rte clearFix"])){
-				print('rteありますすす<br><br>');
+				// print('rteありますすす<br><br>');
 				// echo $doc[".rte clearFix"]->text()."<br /><hr />";
 				$text = $doc[".rte clearFix"]->text();
 		 	}else if(isset($doc[".entryTd"])){
-				print('entryTdありますすすすｓ<br><br>');
+				// print('entryTdありますすすすｓ<br><br>');
 				// echo $doc[".entryTd"]->text()."<br /><hr />";
 				$text = $doc[".entryTd"]->text();
 		 	}else if(isset($doc[".entryBody"])){
-				print('entrybodyありますすすすｓ<br><br>');
+				// print('entrybodyありますすすすｓ<br><br>');
 				// echo $doc[".entryBody"]->text()."<br /><hr />";
 				$text = $doc["entryBody"]->text();
 			}
@@ -65,17 +65,17 @@
 			//DOM取得
 			$doc = phpQuery::newDocument($html);
 
-			echo "amebloです";
+			// echo "amebloです";
 			if (isset($doc[".skin-entryBody"])){
-				print('skinありますすす<br><br>');
+				// print('skinありますすす<br><br>');
 				// echo $doc[".skin-entryBody"]->text()."<br /><hr />";
 				$text = $doc[".skin-entryBody"]->text();
 		 	}else if(isset($doc[".articleText"])){
-				print('articleTextありますすすすｓ<br><br>');
+				// print('articleTextありますすすすｓ<br><br>');
 				// echo $doc[".articleText"]->text()."<br /><hr />";
 				$text = $doc[".articleText"]->text();
 			}else if(isset($doc[".subContentsInner"])){
-				print('subContentsInnerありますすすすｓ<br><br>');
+				// print('subContentsInnerありますすすすｓ<br><br>');
 				// echo $doc[".subContentsInner"]->text()."<br /><hr />";
 				$text = $doc[".subContentsInner"]->text();
 			}
@@ -85,31 +85,53 @@
 			//DOM取得
 			$doc = phpQuery::newDocument($html);
 
-			echo "fc2です";
+			// echo "fc2です";
 			if (isset($doc[".entry_body"])){
-				print('entry_bodyありますすす<br><br>');
+				// print('entry_bodyありますすす<br><br>');
 				// echo $doc[".entry_body"]->text()."<br /><hr />";
 				$text = $doc[".entry_body"]->text();
 			}else if(isset($doc[".main_body"])){
-				print('main_bodyありますすすすｓ<br><br>');
+				// print('main_bodyありますすすすｓ<br><br>');
 				// echo $doc[".main_body"]->text()."<br /><hr />";
 				$text = $doc[".main_body"]->text();
 			}else if(isset($doc[".contents_body"])){
-				print('contents_bodyありますすすすｓ<br><br>');
+				// print('contents_bodyありますすすすｓ<br><br>');
 				// echo $doc[".contents_body"]->text()."<br /><hr />";
 				$text = $doc[".contents_body"]->text();
 			}else if(isset($doc[".entry-content"])){
-				print('entry-contentありますすすすｓ<br><br>');
+				// print('entry-contentありますすすすｓ<br><br>');
 				//  echo $doc[".entry-content"]->text()."<br /><hr />";
 				$text = $doc[".entry-content"]->text();
 			}else if(isset($doc[".inner-contents"])){
-				print('inner-contentsありますすすすｓ<br><br>');
+				// print('inner-contentsありますすすすｓ<br><br>');
 				//  echo $doc[".inner-contents"]->text()."<br /><hr />";
 				$text = $doc[".inner-contents"]->text();
 			}else if(isset($doc[".entry_text"])){
-				print('entry_textありますすすすｓ<br><br>');
+				// print('entry_textありますすすすｓ<br><br>');
 				//  echo $doc[".entry_text"]->text()."<br /><hr />";
 				$text = $doc[".entry_text"]->text();
+			}
+		}else if(strstr($url, 'livedoor')){
+			$html = file_get_contents($url);
+			//DOM取得
+			$doc = phpQuery::newDocument($html);
+
+			// echo "livedoorです";
+			if (isset($doc[".article-body"])){
+				// print('article-bodyありますすす<br><br>');
+				// echo $doc[".entry_body"]->text()."<br /><hr />";
+				$text = $doc[".article-body"]->text();
+			}
+		}else if(strstr($url, 'goo')){
+			$html = file_get_contents($url);
+			//DOM取得
+			$doc = phpQuery::newDocument($html);
+
+			// echo "gooです";
+			if (isset($doc[".entry-body"])){
+				// print('entry-bodyありますすす<br><br>');
+				// echo $doc[".entry_body"]->text()."<br /><hr />";
+				$text = $doc[".entry-body"]->text();
 			}
 		}else{
 			 	$errmess =	"このページは対応していません";
@@ -190,7 +212,7 @@
 			var chart = new CanvasJS.Chart("chartContainer", {
 				theme: "theme2",//theme1
 				title:{
-					text: "result"
+					text: "分析結果"
 				},
 				animationEnabled: false,   // change to true
 				data: [
@@ -244,12 +266,33 @@
 			}
 		}
 	</script>
-	<title>感情分析</title>
+	<style type="text/css">
+		body{
+			background: url(haikei.jpg) no-repeat center center fixed;
+          -webkit-background-size:cover;
+          -moz-background-size:cover;
+          -o-background-size:cover;
+          background-size:cover;
+          height: 100%;
+		}
+		.aaa{
+			width: 60%;
+			margin: auto;
+			margin-top: 5%;
+		}
+		@media screen and (max-width:650px){
+			.aaa{
+				width: 90%;
+				margin-top: 10%;
+			}
+		}
+		</style>
+		<title>感情分析</title>
 </head>
 <body>
 		<div class="container">
 			<div class= "center-block" >
-				<div style="text-align:center;">
+				<div style="text-align:center;margin-bottom:10px;">
 					<a href="./index.php" ><img src="frame.jpg" style="height:100px;"></a>
 				</div>
 				<div>
@@ -269,7 +312,7 @@
 				</div>
 			</div><!-- center-bloc end-->
 			<div style="text-align:center;">
-				<div id="chartContainer" style="height: 250px; width: 80%;margin:auto"></div>
+				<div id="chartContainer" style="height: 250px; width: 100%;margin:auto"></div>
 			</div>
 		</div>
 	</body>
