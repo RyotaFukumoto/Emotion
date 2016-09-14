@@ -197,14 +197,25 @@
 	<title>感情分析</title>
 </head>
 <body>
-	<div style="text-align:center;">
-		<form action=""　method="get" onsubmit="return check(this)">
-			<input type="text" name="url"　placeholder="URLを入力してください" >
-			<button type="submit" name="submit"　value="">分析</button>
-		</form>
-	</div>
-	<div style="text-align:center;">
-		<div id="chartContainer" style="height: 250px; width: 80%;margin:auto"></div>
-	</div>
-</body>
+		<div class="container">
+			<div class= "center-block" >
+				<div>
+					<form action=""　method="get" class="form-inline">
+						<!-- input type="text" name="text"　placeholder="テキストを入力してください"> -->
+						<div class="row" style="text-align:center;">
+							<div class="col-xs-10 col-md-10">
+								<input type="text" name="text" class="form-control" id="Url" placeholder="URLを入力してください。" style="width:100%">
+							</div>
+							<div class="col-xs-2 col-md-2">
+								<button type="submit" name="submit"　value="" class="btn btn-default" style="width:100%">検索</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div><!-- center-bloc end-->
+			<div style="text-align:center;">
+				<div id="chartContainer" style="height: 250px; width: 80%;margin:auto"></div>
+			</div>
+		</div>
+	</body>
 </html>
