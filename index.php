@@ -191,9 +191,12 @@
 		    }
 			}
 		}else {
-			unset($likedislikes);
-			unset($joysads);
-			unset($angerfears);
+			unset($like);
+			unset($dislike);
+			unset($joy);
+			unset($sad);
+			unset($anger);
+			unset($fear);
 		}
 	}
 ?>
@@ -307,7 +310,18 @@
 							</div>
 						</div>
 
-						<label style="color: #ff0000;"><?php if(isset($errmess))echo '<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>'.$errmess; ?></label>
+						<label style="color: #ff0000;"><?php
+						 	if(isset($errmess)){
+								// echo '<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>'.$errmess;
+								echo '<div class="alert alert-warning alert-dismissible fade in" role="alert">';
+								echo '<button type="button" class="close" data-dismiss="alert">';
+								echo '<span aria-hidden="true">×</span>';
+								echo '</button>';
+								echo '<strong>'.$errmess.'</strong>アラート';
+								echo '<p><a href="#" data-dismiss="alert">閉じる</a></p>';
+								echo '</div>';
+							}
+						 ?></label>
 					</form>
 				</div>
 			</div><!-- center-bloc end-->
