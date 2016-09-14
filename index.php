@@ -127,18 +127,24 @@
       ),
     );
     //$proxy_context = stream_context_create($proxy);
-		for ($i=0; $i < $counts ; $i++) {
-			$tex = $arr[$i];
+		if($counts != 0){
+			for ($i=0; $i < $counts ; $i++) {
+				$tex = $arr[$i];
 
-	    try{
-	      $response = file_get_contents($base_url.$tex,false);
-	      $result = json_decode($response,true);
-				$likedislikes = $likedislikes + ($result['likedislike'] *5);
-				$joysads = $joysads + ($result['joysad'] *5);
-				$angerfears = $angerfears + ($result['angerfear'] *5);
-	    }catch(Exception $e){
-	      header("Location: index.php");
-	    }
+		    try{
+		      $response = file_get_contents($base_url.$tex,false);
+		      $result = json_decode($response,true);
+					$likedislikes = $likedislikes + ($result['likedislike'] *5);
+					$joysads = $joysads + ($result['joysad'] *5);
+					$angerfears = $angerfears + ($result['angerfear'] *5);
+		    }catch(Exception $e){
+		      header("Location: index.php");
+		    }
+			}
+		}else {
+			unset($likedislikes);
+			unset($joysads);
+			unset($angerfears);
 		}
 	}
 ?>
@@ -187,7 +193,7 @@
 		function check(frm){
 			var url = change(frm.elements['url'].value);
 			if(url==""){
-				alert("urlを入力してください。");
+				alert("URLを入力してください。");
 				return false;
 			}else{
 				return true;
@@ -200,7 +206,7 @@
 		<div class="container">
 			<div class= "center-block" >
 				<div>
-					<form action=""　method="get" class="form-inline">
+					<form action=""　method="get" class="form-inline" onsubmit="return check(this)">
 						<!-- input type="text" name="text"　placeholder="テキストを入力してください"> -->
 						<div class="row" style="text-align:center;">
 							<div class="col-xs-10 col-md-10">
