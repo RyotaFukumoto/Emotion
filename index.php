@@ -27,6 +27,7 @@
 		$angerfears = 0;
 		$counts = 0;
 		$text = "";
+		$errmess = "";
 		//require
 		require_once('phpQuery-onefile.php');
 		//URLデコード
@@ -106,7 +107,7 @@
 				$text = $doc[".entry_text"]->text();
 			}
 		}else{
-			echo "このページは対応していません";
+			 	$errmess =	"このページは対応していません";
  		}
 		$arr =	mb_str_split($text,25);
 		//array 要素確認
@@ -210,6 +211,8 @@
 								<button type="submit" name="submit"　value="" class="btn btn-default" style="width:100%">検索</button>
 							</div>
 						</div>
+
+						<label style="color: #ff0000;"><?php if(isset($errmess))echo '<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>'.$errmess; ?></label>
 					</form>
 				</div>
 			</div><!-- center-bloc end-->
