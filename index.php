@@ -1,20 +1,131 @@
 
 <!DOCTYPE HTML>
 <?php
+	//マルチバイト対応
+	function mb_str_split($str, $split_len = 1) {
+
+		mb_internal_encoding('UTF-8');
+		mb_regex_encoding('UTF-8');
+
+		if ($split_len <= 0) {
+				$split_len = 1;
+		}
+
+		$strlen = mb_strlen($str, 'UTF-8');
+		$ret    = array();
+
+		for ($i = 0; $i < $strlen; $i += $split_len) {
+				$ret[ ] = mb_substr($str, $i, $split_len);
+		}
+		return $ret;
+	}
+	//検索処理
 	if(isset($_GET['submit'])){
 		$likedislikes = 0;
 		$joysads = 0;
 		$angerfears = 0;
 		$counts = 0;
-		$arr =	mb_str_split($_GET['text'],25);
+		$text = "";
+		//require
+		require_once('phpQuery-onefile.php');
+		//URLデコード
+		$url = urldecode( $_GET["url"]);
 
-		print_r($arr);
+		$html = file_get_contents($url);
+
+		//DOM取得
+		$doc = phpQuery::newDocument($html);
+
+		//要素取得
+
+		 //echo $doc["title"]->text();
+		 //echo $doc["title"];
+
+		if (strstr($url, 'yahoo')) {
+			//ページ取得
+			$html = file_get_contents($url);
+			//DOM取得
+			$doc = phpQuery::newDocument($html);
+
+		 echo "yahooです";
+		 if (isset($doc[".rte clearFix"])){
+				print('rteありますすす<br><br>');
+				// echo $doc[".rte clearFix"]->text()."<br /><hr />";
+				$text = $doc[".rte clearFix"]->text();
+		 }else if(isset($doc[".entryTd"])){
+				print('entryTdありますすすすｓ<br><br>');
+				// echo $doc[".entryTd"]->text()."<br /><hr />";
+				$text = $doc[".entryTd"]->text();
+		 }else if(isset($doc[".entryBody"])){
+				print('entrybodyありますすすすｓ<br><br>');
+				// echo $doc[".entryBody"]->text()."<br /><hr />";
+				$text = $doc["entryBody"]->text();
+			}
+		}else if  (strstr($url, 'ameblo.jp')) {
+			//ページ取得
+			$html = file_get_contents($url);
+			//DOM取得
+			$doc = phpQuery::newDocument($html);
+
+			 echo "amebloです";
+			 if (isset($doc[".skin-entryBody"])){
+					print('skinありますすす<br><br>');
+					// echo $doc[".skin-entryBody"]->text()."<br /><hr />";
+					$text = $doc[".skin-entryBody"]->text();
+			 }else if(isset($doc[".articleText"])){
+					print('articleTextありますすすすｓ<br><br>');
+					// echo $doc[".articleText"]->text()."<br /><hr />";
+					$text = $doc[".articleText"]->text();
+			 }else if(isset($doc[".subContentsInner"])){
+					print('subContentsInnerありますすすすｓ<br><br>');
+					// echo $doc[".subContentsInner"]->text()."<br /><hr />";
+					$text = $doc[".subContentsInner"]->text();
+				}
+		}else if  (strstr($url, 'fc2')) {
+			//ページ取得
+			$html = file_get_contents($url);
+			//DOM取得
+			$doc = phpQuery::newDocument($html);
+
+			 echo "fc2です";
+			 if (isset($doc[".entry_body"])){
+					print('entry_bodyありますすす<br><br>');
+					// echo $doc[".entry_body"]->text()."<br /><hr />";
+					$text = $doc[".entry_body"]->text();
+			 }else if(isset($doc[".main_body"])){
+					print('main_bodyありますすすすｓ<br><br>');
+					// echo $doc[".main_body"]->text()."<br /><hr />";
+					$text = $doc[".main_body"]->text();
+			 }else if(isset($doc[".contents_body"])){
+					print('contents_bodyありますすすすｓ<br><br>');
+					// echo $doc[".contents_body"]->text()."<br /><hr />";
+					$text = $doc[".contents_body"]->text();
+				}else if(isset($doc[".entry-content"])){
+					 print('entry-contentありますすすすｓ<br><br>');
+					//  echo $doc[".entry-content"]->text()."<br /><hr />";
+					 $text = $doc[".entry-content"]->text();
+				}else if(isset($doc[".inner-contents"])){
+					 print('inner-contentsありますすすすｓ<br><br>');
+					//  echo $doc[".inner-contents"]->text()."<br /><hr />";
+					 $text = $doc[".inner-contents"]->text();
+				}else if(isset($doc[".entry_text"])){
+					 print('entry_textありますすすすｓ<br><br>');
+					//  echo $doc[".entry_text"]->text()."<br /><hr />";
+					 $text = $doc[".entry_text"]->text();
+			}else{
+			echo "このページは対応していません";
+		}
+ }
+		$arr =	mb_str_split($text,25);
+		//array 要素確認
+		// print_r($arr);
 		$counts = count($arr);
 
-			# code...
+			# API接続URL作成
 			$api_url='http://ap.mextractr.net/ma9/emotion_analyzer?apikey=';
-			//$api_key='AFA9E3C631DEEB9FE2E9E14114E8DE0E148DB6E4';
-			$api_key='AF987632250187D34CDFEC31474ADE8AABD2E397';//apikeyは各自で書き換えてください
+			//apikeyは各自で書き換えてください
+			$api_key='AFA9E3C631DEEB9FE2E9E14114E8DE0E148DB6E4';
+			// $api_key='AF987632250187D34CDFEC31474ADE8AABD2E397';
 			$base_url = $api_url.$api_key.'&out=json&text=';
 
 			    $proxy = array(
@@ -30,12 +141,9 @@
 				    try{
 				      $response = file_get_contents($base_url.$tex,false);
 				      $result = json_decode($response,true);
-							$result['likedislike'] *5;
-							$result['joysad'] *5;
-							$result['angerfear'] *5;
-							$likedislikes = $likedislikes + $result['likedislike'];
-							$joysads = $joysads + $result['joysad'] ;
-							$angerfears = $angerfears + $result['angerfear'];
+							$likedislikes = $likedislikes + ($result['likedislike'] *5);
+							$joysads = $joysads + ($result['joysad'] *5);
+							$angerfears = $angerfears + ($result['angerfear'] *5);
 				    }catch(Exception $e){
 				      header("Location: index.php");
 				    }
@@ -57,6 +165,7 @@
 	<script src="../tmp/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="../canvasjs/canvasjs.min.js"></script>
 	<script type="text/javascript">
+		//グラフ表示
 		window.onload = function () {
 			var chart = new CanvasJS.Chart("chartContainer", {
 				theme: "theme2",//theme1
@@ -80,12 +189,14 @@
 		}
   </script>
 	<script type="text/javascript">
+	 //スペース削除
 		function change(str){
 			while(str.substr(0,1) == ' ' || str.substr(0,1) == '　'){
 				str = str.substr(1);
 			}
 			return str;
 		}
+		//null チェック
 		function check(frm){
 			var url = change(frm.elements['url'].value);
 			if(url==""){
@@ -96,12 +207,13 @@
 			}
 		}
 	</script>
+	<title>感情分析</title>
 </head>
 <body>
 	<div style="text-align:center;">
 		<form action=""　method="get" onsubmit="return check(this)">
 			<input type="text" name="url"　placeholder="URLを入力してください" >
-			<button type="submit" name="submit"　value="">検索</button>
+			<button type="submit" name="submit"　value="">分析</button>
 		</form>
 	</div>
 	<div style="text-align:center;">
@@ -109,22 +221,3 @@
 	</div>
 </body>
 </html>
-<?php
-function mb_str_split($str, $split_len = 1) {
-
-	mb_internal_encoding('UTF-8');
-	mb_regex_encoding('UTF-8');
-
-	if ($split_len <= 0) {
-			$split_len = 1;
-	}
-
-	$strlen = mb_strlen($str, 'UTF-8');
-	$ret    = array();
-
-	for ($i = 0; $i < $strlen; $i += $split_len) {
-			$ret[ ] = mb_substr($str, $i, $split_len);
-	}
-	return $ret;
-}
- ?>
