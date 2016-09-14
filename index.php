@@ -245,9 +245,36 @@
 		}
 	</script>
 	<title>感情分析</title>
+
+<style type="text/css">
+
+			.aaa{
+				width: 60%;
+				margin: auto;
+				margin-top: 5%;
+
+			}
+			@media screen and (max-width:650px){
+				.aaa{
+					width: 90%;
+					margin-top: 10%;
+				}
+			}
+
+
+    </style>
 </head>
 <body>
+
+	  <body style="
+	  background-image : url(kan.jpg);
+	  background-repeat : repeat;
+	  background-position : center center
+	  ">
+
+
 		<div class="container">
+			  <div class="text-center aaa">
 			<div class= "center-block" >
 				<div style="text-align:center;">
 					<a href="./index.php" ><img src="frame.jpg" style="height:100px;"></a>
