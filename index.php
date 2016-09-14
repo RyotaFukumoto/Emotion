@@ -27,7 +27,6 @@
 		$angerfears = 0;
 		$counts = 0;
 		$text = "";
-		$errmess = "";
 		//require
 		require_once('phpQuery-onefile.php');
 		//URLデコード
