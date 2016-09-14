@@ -193,7 +193,7 @@
 		function check(frm){
 			var url = change(frm.elements['url'].value);
 			if(url==""){
-				alert("urlを入力してください。");
+				alert("URLを入力してください。");
 				return false;
 			}else{
 				return true;
@@ -206,7 +206,7 @@
 		<div class="container">
 			<div class= "center-block" >
 				<div>
-					<form action=""　method="get" class="form-inline">
+					<form action=""　method="get" class="form-inline" onsubmit="return check(this)">
 						<!-- input type="text" name="text"　placeholder="テキストを入力してください"> -->
 						<div class="row" style="text-align:center;">
 							<div class="col-xs-10 col-md-10">
