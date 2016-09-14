@@ -78,12 +78,29 @@
 			});
 			chart.render();
 		}
+  </script>
+	<script type="text/javascript">
+		function change(str){
+			while(str.substr(0,1) == ' ' || str.substr(0,1) == '　'){
+				str = str.substr(1);
+			}
+			return str;
+		}
+		function check(frm){
+			var url = change(frm.elements['url'].value);
+			if(url==""){
+				alert("urlを入力してください。");
+				return false;
+			}else{
+				return true;
+			}
+		}
 	</script>
 </head>
 <body>
 	<div style="text-align:center;">
-		<form action=""　method="get">
-			<input type="text" name="text"　placeholder="テキストを入力してください">
+		<form action=""　method="get" onsubmit="return check(this)">
+			<input type="text" name="url"　placeholder="URLを入力してください" >
 			<button type="submit" name="submit"　value="">検索</button>
 		</form>
 	</div>
