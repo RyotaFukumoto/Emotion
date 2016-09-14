@@ -204,7 +204,7 @@
 						<!-- input type="text" name="text"　placeholder="テキストを入力してください"> -->
 						<div class="row" style="text-align:center;">
 							<div class="col-xs-10 col-md-10">
-								<input type="text" name="text" class="form-control" id="Url" placeholder="URLを入力してください。" style="width:100%">
+								<input type="text" name="url" class="form-control" id="url" placeholder="URLを入力してください。" style="width:100%">
 							</div>
 							<div class="col-xs-2 col-md-2">
 								<button type="submit" name="submit"　value="" class="btn btn-default" style="width:100%">検索</button>
