@@ -19,6 +19,7 @@
 		}
 		return $ret;
 	}
+
 	//検索処理
 	if(isset($_GET['submit'])){
 		$likedislikes = 0;
@@ -31,32 +32,23 @@
 		//URLデコード
 		$url = urldecode( $_GET["url"]);
 
-		$html = file_get_contents($url);
-
-		//DOM取得
-		$doc = phpQuery::newDocument($html);
-
 		//要素取得
-
-		 //echo $doc["title"]->text();
-		 //echo $doc["title"];
-
 		if (strstr($url, 'yahoo')) {
 			//ページ取得
 			$html = file_get_contents($url);
 			//DOM取得
 			$doc = phpQuery::newDocument($html);
 
-		 echo "yahooです";
-		 if (isset($doc[".rte clearFix"])){
+	 		echo "yahooです";
+		 	if (isset($doc[".rte clearFix"])){
 				print('rteありますすす<br><br>');
 				// echo $doc[".rte clearFix"]->text()."<br /><hr />";
 				$text = $doc[".rte clearFix"]->text();
-		 }else if(isset($doc[".entryTd"])){
+		 	}else if(isset($doc[".entryTd"])){
 				print('entryTdありますすすすｓ<br><br>');
 				// echo $doc[".entryTd"]->text()."<br /><hr />";
 				$text = $doc[".entryTd"]->text();
-		 }else if(isset($doc[".entryBody"])){
+		 	}else if(isset($doc[".entryBody"])){
 				print('entrybodyありますすすすｓ<br><br>');
 				// echo $doc[".entryBody"]->text()."<br /><hr />";
 				$text = $doc["entryBody"]->text();
@@ -67,93 +59,88 @@
 			//DOM取得
 			$doc = phpQuery::newDocument($html);
 
-			 echo "amebloです";
-			 if (isset($doc[".skin-entryBody"])){
-					print('skinありますすす<br><br>');
-					// echo $doc[".skin-entryBody"]->text()."<br /><hr />";
-					$text = $doc[".skin-entryBody"]->text();
-			 }else if(isset($doc[".articleText"])){
-					print('articleTextありますすすすｓ<br><br>');
-					// echo $doc[".articleText"]->text()."<br /><hr />";
-					$text = $doc[".articleText"]->text();
-			 }else if(isset($doc[".subContentsInner"])){
-					print('subContentsInnerありますすすすｓ<br><br>');
-					// echo $doc[".subContentsInner"]->text()."<br /><hr />";
-					$text = $doc[".subContentsInner"]->text();
-				}
+			echo "amebloです";
+			if (isset($doc[".skin-entryBody"])){
+				print('skinありますすす<br><br>');
+				// echo $doc[".skin-entryBody"]->text()."<br /><hr />";
+				$text = $doc[".skin-entryBody"]->text();
+		 	}else if(isset($doc[".articleText"])){
+				print('articleTextありますすすすｓ<br><br>');
+				// echo $doc[".articleText"]->text()."<br /><hr />";
+				$text = $doc[".articleText"]->text();
+			}else if(isset($doc[".subContentsInner"])){
+				print('subContentsInnerありますすすすｓ<br><br>');
+				// echo $doc[".subContentsInner"]->text()."<br /><hr />";
+				$text = $doc[".subContentsInner"]->text();
+			}
 		}else if  (strstr($url, 'fc2')) {
 			//ページ取得
 			$html = file_get_contents($url);
 			//DOM取得
 			$doc = phpQuery::newDocument($html);
 
-			 echo "fc2です";
-			 if (isset($doc[".entry_body"])){
-					print('entry_bodyありますすす<br><br>');
-					// echo $doc[".entry_body"]->text()."<br /><hr />";
-					$text = $doc[".entry_body"]->text();
-			 }else if(isset($doc[".main_body"])){
-					print('main_bodyありますすすすｓ<br><br>');
-					// echo $doc[".main_body"]->text()."<br /><hr />";
-					$text = $doc[".main_body"]->text();
-			 }else if(isset($doc[".contents_body"])){
-					print('contents_bodyありますすすすｓ<br><br>');
-					// echo $doc[".contents_body"]->text()."<br /><hr />";
-					$text = $doc[".contents_body"]->text();
-				}else if(isset($doc[".entry-content"])){
-					 print('entry-contentありますすすすｓ<br><br>');
-					//  echo $doc[".entry-content"]->text()."<br /><hr />";
-					 $text = $doc[".entry-content"]->text();
-				}else if(isset($doc[".inner-contents"])){
-					 print('inner-contentsありますすすすｓ<br><br>');
-					//  echo $doc[".inner-contents"]->text()."<br /><hr />";
-					 $text = $doc[".inner-contents"]->text();
-				}else if(isset($doc[".entry_text"])){
-					 print('entry_textありますすすすｓ<br><br>');
-					//  echo $doc[".entry_text"]->text()."<br /><hr />";
-					 $text = $doc[".entry_text"]->text();
-			}else{
+			echo "fc2です";
+			if (isset($doc[".entry_body"])){
+				print('entry_bodyありますすす<br><br>');
+				// echo $doc[".entry_body"]->text()."<br /><hr />";
+				$text = $doc[".entry_body"]->text();
+			}else if(isset($doc[".main_body"])){
+				print('main_bodyありますすすすｓ<br><br>');
+				// echo $doc[".main_body"]->text()."<br /><hr />";
+				$text = $doc[".main_body"]->text();
+			}else if(isset($doc[".contents_body"])){
+				print('contents_bodyありますすすすｓ<br><br>');
+				// echo $doc[".contents_body"]->text()."<br /><hr />";
+				$text = $doc[".contents_body"]->text();
+			}else if(isset($doc[".entry-content"])){
+				print('entry-contentありますすすすｓ<br><br>');
+				//  echo $doc[".entry-content"]->text()."<br /><hr />";
+				$text = $doc[".entry-content"]->text();
+			}else if(isset($doc[".inner-contents"])){
+				print('inner-contentsありますすすすｓ<br><br>');
+				//  echo $doc[".inner-contents"]->text()."<br /><hr />";
+				$text = $doc[".inner-contents"]->text();
+			}else if(isset($doc[".entry_text"])){
+				print('entry_textありますすすすｓ<br><br>');
+				//  echo $doc[".entry_text"]->text()."<br /><hr />";
+				$text = $doc[".entry_text"]->text();
+			}
+		}else{
 			echo "このページは対応していません";
-		}
- }
+ 		}
 		$arr =	mb_str_split($text,25);
 		//array 要素確認
 		// print_r($arr);
 		$counts = count($arr);
 
-			# API接続URL作成
-			$api_url='http://ap.mextractr.net/ma9/emotion_analyzer?apikey=';
-			//apikeyは各自で書き換えてください
-			$api_key='AFA9E3C631DEEB9FE2E9E14114E8DE0E148DB6E4';
-			// $api_key='AF987632250187D34CDFEC31474ADE8AABD2E397';
-			$base_url = $api_url.$api_key.'&out=json&text=';
+		# API接続URL作成
+		$api_url='http://ap.mextractr.net/ma9/emotion_analyzer?apikey=';
+		//apikeyは各自で書き換えてください
+		$api_key='AFA9E3C631DEEB9FE2E9E14114E8DE0E148DB6E4';
+		// $api_key='AF987632250187D34CDFEC31474ADE8AABD2E397';
+		$base_url = $api_url.$api_key.'&out=json&text=';
 
-			    $proxy = array(
-			      "http" => array(
-			      //  "proxy" => "tcp://proxy.kmt.neec.ac.jp:8080",
-			      //  'request_fulluri' => true,
-			      ),
-			    );
-			    //$proxy_context = stream_context_create($proxy);
-					for ($i=0; $i < $counts ; $i++) {
-						$tex = $arr[$i];
+    $proxy = array(
+      "http" => array(
+      //  "proxy" => "tcp://proxy.kmt.neec.ac.jp:8080",
+      //  'request_fulluri' => true,
+      ),
+    );
+    //$proxy_context = stream_context_create($proxy);
+		for ($i=0; $i < $counts ; $i++) {
+			$tex = $arr[$i];
 
-				    try{
-				      $response = file_get_contents($base_url.$tex,false);
-				      $result = json_decode($response,true);
-							$likedislikes = $likedislikes + ($result['likedislike'] *5);
-							$joysads = $joysads + ($result['joysad'] *5);
-							$angerfears = $angerfears + ($result['angerfear'] *5);
-				    }catch(Exception $e){
-				      header("Location: index.php");
-				    }
-					}
-				echo "joysad".$joysads."　";
-				echo "likedislike".$likedislikes."　";
-				echo "angerfear".$angerfears;
+	    try{
+	      $response = file_get_contents($base_url.$tex,false);
+	      $result = json_decode($response,true);
+				$likedislikes = $likedislikes + ($result['likedislike'] *5);
+				$joysads = $joysads + ($result['joysad'] *5);
+				$angerfears = $angerfears + ($result['angerfear'] *5);
+	    }catch(Exception $e){
+	      header("Location: index.php");
+	    }
 		}
-
-
+	}
 ?>
 <html>
 <head>
