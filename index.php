@@ -37,6 +37,16 @@
 		require_once('phpQuery-onefile.php');
 		//URLデコード
 		$url = urldecode( $_GET["url"]);
+		// 環境変数取得
+		$http_proxy = getenv('HTTP_PROXY');
+		// プロキシ設定
+		$proxy = array(
+			"http" => array(
+				// "proxy" => $http_proxy,
+				//  'request_fulluri' => true,
+			),
+		);
+		$proxy_context = stream_context_create($proxy);
 
 		//要素取得
 		if (strstr($url, 'yahoo')) {
@@ -146,17 +156,10 @@
 		//apikeyは各自で書き換えてください
 		// $api_key='AFA9E3C631DEEB9FE2E9E14114E8DE0E148DB6E4';//福本１
 		// $api_key='AF987632250187D34CDFEC31474ADE8AABD2E397';//福本2
-		// $api_key='03B9E9231D6C2EACCA2E15C43FA4C9B2934F17D8';//林
-		$api_key='A09C2D091C0995F3A08AE6184FBB80A4BBDA38DE';//望月
+		$api_key='03B9E9231D6C2EACCA2E15C43FA4C9B2934F17D8';//林
+		// $api_key='A09C2D091C0995F3A08AE6184FBB80A4BBDA38DE';//望月
 		$base_url = $api_url.$api_key.'&out=json&text=';
 
-    $proxy = array(
-      "http" => array(
-      //  "proxy" => "tcp://proxy.kmt.neec.ac.jp:8080",
-      //  'request_fulluri' => true,
-      ),
-    );
-    //$proxy_context = stream_context_create($proxy);
 		if($counts != 0){
 			for ($i=0; $i < $counts ; $i++) {
 				$tex = $arr[$i];
@@ -268,6 +271,9 @@
 				return true;
 			}
 		}
+		$(function () {
+			$('[data-toggle="popover"]').popover();
+		});
 	</script>
 	<style type="text/css">
 		body{
@@ -294,6 +300,9 @@
 </head>
 <body>
 		<div class="container">
+			<div>
+				<button type="button" class="btn btn-default" id="mypopover" data-toggle="popover" title="対応サイト" data-content="<a href='http://blog.fc2.com/' target='blank'>FC2ブログ</a><br/><a href='http://blogs.yahoo.co.jp' target='blank'>Yahooブログ</a><br><a href='http://blog.goo.ne.jp/' target='blank'>gooブログ</a><br><a href='http://official.ameba.jp/' target='blank'>amebaブログ</a><br><a href='http://blog.livedoor.com/' target='blank'>livedoorブログ</a>" data-placement="bottom" data-html="true">対応サイト</button>
+			</div>
 			<div class= "center-block" >
 				<div style="text-align:center;margin-bottom:10px;">
 					<a href="./index.php" ><img src="frame.jpg" style="height:100px;"></a>
@@ -321,7 +330,7 @@
 								echo '<p><a href="#" data-dismiss="alert">閉じる</a></p>';
 								echo '</div>';
 							}
-						 ?>
+						?>
 					</form>
 				</div>
 			</div><!-- center-bloc end-->
