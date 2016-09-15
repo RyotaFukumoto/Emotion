@@ -3,154 +3,29 @@
 <?php
 	//マルチバイト対応
 	function mb_str_split($str, $split_len = 1) {
-
 		mb_internal_encoding('UTF-8');
 		mb_regex_encoding('UTF-8');
-
 		if ($split_len <= 0) {
 				$split_len = 1;
 		}
-
 		$strlen = mb_strlen($str, 'UTF-8');
 		$ret    = array();
-
 		for ($i = 0; $i < $strlen; $i += $split_len) {
 				$ret[ ] = mb_substr($str, $i, $split_len);
 		}
 		return $ret;
 	}
-
 	//検索処理
 	if(isset($_GET['submit'])){
-		// $likedislikes = 0;
+		// 使用変数作成
 		$like = 0;
 		$dislike = 0;
-		// $joysads = 0;
 		$joy = 0;
 		$sad = 0;
-		// $angerfears = 0;
 		$anger = 0;
 		$fear = 0;
 		$counts = 0;
 		$text = "";
-		//require
-		require_once('phpQuery-onefile.php');
-		//URLデコード
-		$url = urldecode( $_GET["url"]);
-		// 環境変数取得
-		$http_proxy = getenv('HTTP_PROXY');
-		// プロキシ設定
-		$proxy = array(
-			"http" => array(
-				// "proxy" => $http_proxy,
-				//  'request_fulluri' => true,
-			),
-		);
-		$proxy_context = stream_context_create($proxy);
-
-		//要素取得
-		if (strstr($url, 'yahoo')) {
-			//ページ取得
-			$html = file_get_contents($url);
-			//DOM取得
-			$doc = phpQuery::newDocument($html);
-
-			// 	echo "yahooです";
-		 	if (isset($doc[".rte clearFix"])){
-				// print('rteありますすす<br><br>');
-				// echo $doc[".rte clearFix"]->text()."<br /><hr />";
-				$text = $doc[".rte clearFix"]->text();
-		 	}else if(isset($doc[".entryTd"])){
-				// print('entryTdありますすすすｓ<br><br>');
-				// echo $doc[".entryTd"]->text()."<br /><hr />";
-				$text = $doc[".entryTd"]->text();
-		 	}else if(isset($doc[".entryBody"])){
-				// print('entrybodyありますすすすｓ<br><br>');
-				// echo $doc[".entryBody"]->text()."<br /><hr />";
-				$text = $doc["entryBody"]->text();
-			}
-		}else if  (strstr($url, 'ameblo.jp')) {
-			//ページ取得
-			$html = file_get_contents($url);
-			//DOM取得
-			$doc = phpQuery::newDocument($html);
-
-			// echo "amebloです";
-			if (isset($doc[".skin-entryBody"])){
-				// print('skinありますすす<br><br>');
-				// echo $doc[".skin-entryBody"]->text()."<br /><hr />";
-				$text = $doc[".skin-entryBody"]->text();
-		 	}else if(isset($doc[".articleText"])){
-				// print('articleTextありますすすすｓ<br><br>');
-				// echo $doc[".articleText"]->text()."<br /><hr />";
-				$text = $doc[".articleText"]->text();
-			}else if(isset($doc[".subContentsInner"])){
-				// print('subContentsInnerありますすすすｓ<br><br>');
-				// echo $doc[".subContentsInner"]->text()."<br /><hr />";
-				$text = $doc[".subContentsInner"]->text();
-			}
-		}else if  (strstr($url, 'fc2')) {
-			//ページ取得
-			$html = file_get_contents($url);
-			//DOM取得
-			$doc = phpQuery::newDocument($html);
-
-			// echo "fc2です";
-			if (isset($doc[".entry_body"])){
-				// print('entry_bodyありますすす<br><br>');
-				// echo $doc[".entry_body"]->text()."<br /><hr />";
-				$text = $doc[".entry_body"]->text();
-			}else if(isset($doc[".main_body"])){
-				// print('main_bodyありますすすすｓ<br><br>');
-				// echo $doc[".main_body"]->text()."<br /><hr />";
-				$text = $doc[".main_body"]->text();
-			}else if(isset($doc[".contents_body"])){
-				// print('contents_bodyありますすすすｓ<br><br>');
-				// echo $doc[".contents_body"]->text()."<br /><hr />";
-				$text = $doc[".contents_body"]->text();
-			}else if(isset($doc[".entry-content"])){
-				// print('entry-contentありますすすすｓ<br><br>');
-				//  echo $doc[".entry-content"]->text()."<br /><hr />";
-				$text = $doc[".entry-content"]->text();
-			}else if(isset($doc[".inner-contents"])){
-				// print('inner-contentsありますすすすｓ<br><br>');
-				//  echo $doc[".inner-contents"]->text()."<br /><hr />";
-				$text = $doc[".inner-contents"]->text();
-			}else if(isset($doc[".entry_text"])){
-				// print('entry_textありますすすすｓ<br><br>');
-				//  echo $doc[".entry_text"]->text()."<br /><hr />";
-				$text = $doc[".entry_text"]->text();
-			}
-		}else if(strstr($url, 'livedoor')){
-			$html = file_get_contents($url);
-			//DOM取得
-			$doc = phpQuery::newDocument($html);
-
-			// echo "livedoorです";
-			if (isset($doc[".article-body"])){
-				// print('article-bodyありますすす<br><br>');
-				// echo $doc[".entry_body"]->text()."<br /><hr />";
-				$text = $doc[".article-body"]->text();
-			}
-		}else if(strstr($url, 'goo')){
-			$html = file_get_contents($url);
-			//DOM取得
-			$doc = phpQuery::newDocument($html);
-
-			// echo "gooです";
-			if (isset($doc[".entry-body"])){
-				// print('entry-bodyありますすす<br><br>');
-				// echo $doc[".entry_body"]->text()."<br /><hr />";
-				$text = $doc[".entry-body"]->text();
-			}
-		}else{
-			 	$errmess =	"このページは対応していません";
- 		}
-		$arr =	mb_str_split($text,25);
-
-		// print_r($arr);
-		$counts = count($arr);
-
 		# API接続URL作成
 		$api_url='http://ap.mextractr.net/ma9/emotion_analyzer?apikey=';
 		//apikeyは各自で書き換えてください
@@ -159,13 +34,97 @@
 		$api_key='03B9E9231D6C2EACCA2E15C43FA4C9B2934F17D8';//林
 		// $api_key='A09C2D091C0995F3A08AE6184FBB80A4BBDA38DE';//望月
 		$base_url = $api_url.$api_key.'&out=json&text=';
+		//require
+		require_once('phpQuery-onefile.php');
+		//URLデコード
+		$url = urldecode( $_GET["url"]);
+		// 環境変数取得
+		$http_proxy = getenv('$HTTP_PROXY');
+		echo $http_proxy;
+		// プロキシ設定
+		$proxy = array(
+			"http" => array(
+				"proxy" => "tcp://proxy.kmt.neec.ac.jp:8080",
+				 'request_fulluri' => true,
+			),
+		);
+		$proxy_context = stream_context_create($proxy);
 
+		//要素取得
+		if (strstr($url, 'yahoo')) {
+			//ページ取得
+			$html = @file_get_contents($url,false);
+			//DOM取得
+			$doc = phpQuery::newDocument($html);
+			// タグ検索
+		 	if (isset($doc[".rte clearFix"])){
+				$text = $doc[".rte clearFix"]->text();
+		 	}else if(isset($doc[".entryTd"])){
+				$text = $doc[".entryTd"]->text();
+		 	}else if(isset($doc[".entryBody"])){
+				$text = $doc["entryBody"]->text();
+			}
+		}else if  (strstr($url, 'ameblo.jp')) {
+			//ページ取得
+			$html = file_get_contents($url,false);
+			//DOM取得
+			$doc = phpQuery::newDocument($html);
+			// タグ検索
+			if (isset($doc[".skin-entryBody"])){
+				$text = $doc[".skin-entryBody"]->text();
+		 	}else if(isset($doc[".articleText"])){
+				$text = $doc[".articleText"]->text();
+			}else if(isset($doc[".subContentsInner"])){
+				$text = $doc[".subContentsInner"]->text();
+			}
+		}else if  (strstr($url, 'fc2')) {
+			//ページ取得
+			$html = file_get_contents($url,false);
+			//DOM取得
+			$doc = phpQuery::newDocument($html);
+			// タグ検索
+			if (isset($doc[".entry_body"])){
+				$text = $doc[".entry_body"]->text();
+			}else if(isset($doc[".main_body"])){
+				$text = $doc[".main_body"]->text();
+			}else if(isset($doc[".contents_body"])){
+				$text = $doc[".contents_body"]->text();
+			}else if(isset($doc[".entry-content"])){
+				$text = $doc[".entry-content"]->text();
+			}else if(isset($doc[".inner-contents"])){
+				$text = $doc[".inner-contents"]->text();
+			}else if(isset($doc[".entry_text"])){
+				$text = $doc[".entry_text"]->text();
+			}
+		}else if(strstr($url, 'livedoor')){
+			$html = file_get_contents($url,false);
+			//DOM取得
+			$doc = phpQuery::newDocument($html);
+			// タグ検索
+			if (isset($doc[".article-body"])){
+				$text = $doc[".article-body"]->text();
+			}
+		}else if(strstr($url, 'goo')){
+			$html = file_get_contents($url,false);
+			//DOM取得
+			$doc = phpQuery::newDocument($html);
+			// タグ検索
+			if (isset($doc[".entry-body"])){
+				$text = $doc[".entry-body"]->text();
+			}
+		}else{
+			 	$errmess =	"このページは対応していません";
+ 		}
+		$arr =	mb_str_split($text,25);
+		$counts = count($arr);
+		// ページからテキストが取得できればAPI接続
 		if($counts != 0){
 			for ($i=0; $i < $counts ; $i++) {
 				$tex = $arr[$i];
-
-		    try{
+    		try{
+					// API接続
 		      $response = file_get_contents($base_url.$tex,false);
+					// Json変換
 		      $result = json_decode($response,true);
 					if(isset($result["analyzed_text"])){
 						if($result["likedislike"] > 0){
@@ -173,19 +132,16 @@
 						}else {
 							$dislike = $dislike + ($result["likedislike"] * -5);
 						}
-						// $likedislikes = $likedislikes + ($result['likedislike'] *5);
 						if($result["joysad"] > 0){
 							$joy = $joy + ($result["joysad"] * 5);
 						}else {
 							$sad = $sad + ($result["joysad"] * -5);
 						}
-						// $joysads = $joysads + ($result['joysad'] *5);
 						if($result["angerfear"] > 0){
 							$anger = $anger + ($result["angerfear"] * 5);
 						}else {
 							$fear = $fear + ($result["angerfear"] * 5);
 						}
-						// $angerfears = $angerfears + ($result['angerfear'] *5);
 					}else{
 						$errmess = "APIキーが使用制限に達しました。";
 					}
@@ -194,6 +150,7 @@
 		    }
 			}
 		}else {
+			//取得テキストがなかった場合変数削除
 			unset($like);
 			unset($dislike);
 			unset($joy);
@@ -254,7 +211,7 @@
 		}
   </script>
 	<script type="text/javascript">
-	 //スペース削除
+	 //テキストフォームスペース削除
 		function change(str){
 			while(str.substr(0,1) == ' ' || str.substr(0,1) == '　'){
 				str = str.substr(1);
@@ -271,6 +228,7 @@
 				return true;
 			}
 		}
+		// popover使用
 		$(function () {
 			$('[data-toggle="popover"]').popover();
 		});
@@ -304,12 +262,13 @@
 				<button type="button" class="btn btn-default" id="mypopover" data-toggle="popover" title="対応サイト" data-content="<a href='http://blog.fc2.com/' target='blank'>FC2ブログ</a><br/><a href='http://blogs.yahoo.co.jp' target='blank'>Yahooブログ</a><br><a href='http://blog.goo.ne.jp/' target='blank'>gooブログ</a><br><a href='http://official.ameba.jp/' target='blank'>amebaブログ</a><br><a href='http://blog.livedoor.com/' target='blank'>livedoorブログ</a>" data-placement="bottom" data-html="true">対応サイト</button>
 			</div>
 			<div class= "center-block" >
+				<!-- ヘッダーロゴ -->
 				<div style="text-align:center;margin-bottom:10px;">
 					<a href="./index.php" ><img src="frame.jpg" style="height:100px;"></a>
 				</div>
 				<div>
+					<!-- フォーム作成 -->
 					<form action=""　method="get" class="form-inline" onsubmit="return check(this)">
-						<!-- input type="text" name="text"　placeholder="テキストを入力してください"> -->
 						<div class="row" style="text-align:center;">
 							<div class="col-xs-10 col-md-10">
 								<input type="text" name="url" class="form-control" id="url" placeholder="URLを入力してください。" style="width:100%">
@@ -320,8 +279,8 @@
 						</div>
 
 						<?php
+						// エラーアラート表示
 						 	if(isset($errmess)){
-								// echo '<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>'.$errmess;
 								echo '<div class="alert alert-warning alert-dismissible fade in" role="alert" style="text-align:center;margin-top:10px;">';
 								echo '<button type="button" class="close" data-dismiss="alert">';
 								echo '<span aria-hidden="true">×</span>';
@@ -337,6 +296,6 @@
 			<div style="text-align:center;">
 				<div id="chartContainer" style="height: 250px; width: 100%;margin:auto"></div>
 			</div>
-		</div>
+		</div><!-- conteiner end-->
 	</body>
 </html>
