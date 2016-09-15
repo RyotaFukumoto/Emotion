@@ -310,18 +310,18 @@
 							</div>
 						</div>
 
-						<label style="color: #ff0000;"><?php
+						<?php
 						 	if(isset($errmess)){
 								// echo '<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>'.$errmess;
-								echo '<div class="alert alert-warning alert-dismissible fade in" role="alert">';
+								echo '<div class="alert alert-warning alert-dismissible fade in" role="alert" style="text-align:center;margin-top:10px;">';
 								echo '<button type="button" class="close" data-dismiss="alert">';
 								echo '<span aria-hidden="true">×</span>';
 								echo '</button>';
-								echo '<strong>'.$errmess.'</strong>アラート';
+								echo '<strong>'.$errmess.'</strong>';
 								echo '<p><a href="#" data-dismiss="alert">閉じる</a></p>';
 								echo '</div>';
 							}
-						 ?></label>
+						 ?>
 					</form>
 				</div>
 			</div><!-- center-bloc end-->
